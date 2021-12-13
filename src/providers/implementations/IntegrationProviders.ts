@@ -40,7 +40,6 @@ export class IntegrationProviders implements IAPIcosuming{
     }
 
     async postDataOrders(data: MainDataIntegration): Promise<void>{
-        console.log(data, "Entrei")
         let form = new FormData();
         let xml = '<?xml version="1.0" encoding="UTF-8"?>';
         xml += `<pedido>`

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { OrdersDay } from "../../entities/OrdersDay";
 import { IOrdersDayRepository } from "../IOrdersDayRepository";
-import { Schema, model, connect} from "mongoose";
+import { Schema, model, connect, disconnect} from "mongoose";
 import { InterfaceMongo } from "./InterfaceMongo";
 import { OrdersModel } from "./OrdersModel";
 import { OrdersDayModel } from "./OrdersDayModel";
@@ -26,6 +26,8 @@ export class MongoDBOrdersDayRepository implements IOrdersDayRepository{
                     qtt_ordered: search.length
                 })
             }
+
+            await disconnect();
             return result
         }catch(err){
             console.log(err)
@@ -51,6 +53,8 @@ export class MongoDBOrdersDayRepository implements IOrdersDayRepository{
                 qtt_ordered: orders.qtt_ordered
             });
         }
+
+        await disconnect();
     }
 
     async searchOne(orders: OrdersDay): Promise<any>{
@@ -59,6 +63,7 @@ export class MongoDBOrdersDayRepository implements IOrdersDayRepository{
             const OrdersModel = model<InterfaceMongo>('Orders');
             let result = await OrdersModel.find({number_orders: orders.number_orders}).exec();
 
+            await disconnect();
             return result
         }catch(err){
             console.log(err)
@@ -74,6 +79,7 @@ export class MongoDBOrdersDayRepository implements IOrdersDayRepository{
             number_orders: orders.number_orders
         })
         await newOrders.save()
+        await disconnect();
     }
 
     async getOrdersDay(): Promise<any>{
@@ -82,6 +88,7 @@ export class MongoDBOrdersDayRepository implements IOrdersDayRepository{
             const OrdersModel = model<InterfaceMongo>('OrdersDay');
             let result = await OrdersModel.find({});
 
+            await disconnect();
             return result
         }catch(err){
             console.log(err)
